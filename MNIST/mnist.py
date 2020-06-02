@@ -52,12 +52,16 @@ for i in range(cols):
       axs[j][i].set_title(str(j))
       num_of_samples.append(len(x_selected))
 
+fig.show()
+
 print(num_of_samples)
 plt.figure(figsize=(12,4))
 plt.bar(range(0,num_classes), num_of_samples)
 plt.title("Distribution of the Training Data")
 plt.xlabel("Class Number")
 plt.ylabel("Number of Images")
+
+plt.show()
 
 y_train = to_categorical(y_train, 10)
 y_test = to_categorical(y_test,10)
@@ -92,11 +96,15 @@ plt.legend(['loss', 'val_loss'])
 plt.title("Loss")
 plt.xlabel('epoch')
 
+plt.show()
+
 plt.plot(history.history['accuracy'])
 plt.plot(history.history['val_accuracy'])
 plt.legend(['accuracy', 'val_accuracy'])
 plt.title("Accuracy")
 plt.xlabel('epoch')
+
+plt.show()
 
 score = model.evaluate(X_test, y_test, verbose = 0)
 print('Test Score: ', score[0])
