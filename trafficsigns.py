@@ -8,9 +8,7 @@ Original file is located at
 """
 
 
-
-
-
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import random
@@ -24,6 +22,8 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D
 import pickle
 import pandas as pd
 np.random.seed(0)
+
+os.system('git clone https://bitbucket.org/jadslim/german-traffic-signs')
 
 with open('german-traffic-signs/train.p', 'rb') as f:
   train_data = pickle.load(f)
@@ -168,7 +168,7 @@ def modified_model():
 model = modified_model()
 print(model.summary())
 
-history = model.fit_generator(dataGen.flow(X_train, y_train, batch_size = 50), steps_per_epoch = 2000, epochs = 10, validation_data = (X_val, y_val), shuffle = 1)
+history = model.fit(dataGen.flow(X_train, y_train, batch_size = 50), steps_per_epoch = 2000, epochs = 10, validation_data = (X_val, y_val), shuffle = 1)
 
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])
