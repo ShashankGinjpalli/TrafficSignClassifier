@@ -24,11 +24,26 @@ import pandas as pd
 np.random.seed(0)
 import tensorflow as tf
 import os
+import cv2
 
 os.system('git clone https://bitbucket.org/jadslim/german-traffic-signs')
 print(tf.__version__)
 
-TRAIN = 1
+TRAIN = 0
+
+def grayscale(img):
+    img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    return img
+
+def equalize(img):
+  img = cv2.equalizeHist(img)
+  return img
+
+def preprocessing(img):
+  img = grayscale(img)
+  img = equalize(img)
+  img = img/255
+  return img
 
 if(TRAIN):
 
@@ -85,9 +100,9 @@ if(TRAIN):
   plt.ylabel("Number of images")
 
   plt.show()
-  plt.pause(5)
+  plt.close()
 
-  import cv2
+ 
 
   plt.imshow(X_train[1000])
   plt.axis("off")
@@ -95,19 +110,16 @@ if(TRAIN):
   print(X_train[1000].shape)
   print(y_train[1000])
 
-  def grayscale(img):
-    img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    return img
+  
 
   img = grayscale(X_train[1000])
   plt.imshow(img)
   plt.axis("off")
   plt.set_cmap('gray')
+  plt.close()
   print(img.shape)
 
-  def equalize(img):
-    img = cv2.equalizeHist(img)
-    return img
+ 
 
   img = equalize(img)
   plt.imshow(img)
@@ -115,13 +127,9 @@ if(TRAIN):
   plt.set_cmap('gray')
 
   plt.draw()
-  plot.pause(5)
+  plt.close()
 
-  def preprocessing(img):
-    img = grayscale(img)
-    img = equalize(img)
-    img = img/255
-    return img
+  
 
   X_train = np.array(list(map(preprocessing, X_train)))
   X_val = np.array(list(map(preprocessing, X_val)))
@@ -157,6 +165,8 @@ if(TRAIN):
   y_train = to_categorical(y_train, 43)
   y_val = to_categorical(y_val, 43)
   y_test = to_categorical(y_test,43)
+
+  plt.close()
 
   def modified_model():
     model = Sequential()
@@ -211,7 +221,9 @@ else:
 
 #fetch image
   
-  model = load_model("trainedModel")
+  model = keras.models.load_model('trainedModel')
+
+  
   import requests
   from PIL import Image
   url = 'https://c8.alamy.com/comp/J2MRAJ/german-road-sign-bicycles-crossing-J2MRAJ.jpg'
@@ -219,15 +231,23 @@ else:
   img = Image.open(r.raw)
   plt.imshow(img, cmap=plt.get_cmap('gray'))
   plt.draw()
+  plt.pause(5)
+  plt.close()
   
   
   #Preprocess image
   
   img = np.asarray(img)
   img = cv2.resize(img, (32, 32))
+  
   img = preprocessing(img)
+
   plt.imshow(img, cmap = plt.get_cmap('gray'))
   plt.draw()
+
+  plt.pause(5)
+  plt.close()
+  
   print(img.shape)
   
   #Reshape reshape
