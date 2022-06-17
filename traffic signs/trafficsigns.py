@@ -10,7 +10,7 @@ Original file is located at
 
 
 
-
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import random
@@ -24,6 +24,8 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D
 import pickle
 import pandas as pd
 np.random.seed(0)
+
+os.system('git clone https://bitbucket.org/jadslim/german-traffic-signs')
 
 with open('german-traffic-signs/train.p', 'rb') as f:
   train_data = pickle.load(f)
